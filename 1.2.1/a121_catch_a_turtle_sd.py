@@ -8,8 +8,9 @@ import random as rand
 t_shape = "arrow"
 t_color = "red"
 t_shapesize = 5
-new_xpos = 1
-new_ypos = 100
+global score = 0
+speed = 0
+
 
 #-----initialize turtle-----
 t.shape(t_shape)
@@ -19,13 +20,14 @@ t.fillcolor(t_color)
 #-----game functions--------
 def t_clicked(x,y):
     change_position()
+def update_score():
+
+
 def change_position():
-    rand.randint(1,100)
-    new_xpos = rand.randint(1,100)
-    new_ypos =rand.randint(1,100)
-    t.goto(new_xpos,new_xpos)
-
-
+    t.penup()
+    new_xpos = rand.randint(-350,300)
+    new_ypos = rand.randint(300, 300)
+    t.goto(new_xpos, new_ypos)
 
 
 
