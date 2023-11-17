@@ -4,6 +4,7 @@ import turtle as trtl
 t = trtl.Turtle()
 import random as rand
 score_writer = trtl.Turtle()
+import leaderboard as lb
 
 #-----countdown variables-----
 font_setup = ("Arial", 20, "normal")
@@ -21,7 +22,10 @@ t_color = "red"
 t_shapesize = 5
 score = 0
 font_setup = ("Arial", 20, "normal")
-
+timer_up = False
+# leaderboard variables
+leaderboard_file_name = "a122_leaderboard.txt"
+player_name = input("Please enter your name:")
 
 #-----initialize turtle-----
 t.shape(t_shape)
@@ -51,6 +55,7 @@ def countdown():
   if timer <= 0:
     counter.write("Time's Up", font=font_setup)
     timer_up = True
+    manage_leaderboard()
   else:
     counter.write("Timer: " + str(timer), font=font_setup)
     timer -= 1
@@ -63,7 +68,25 @@ def change_position():
     new_ypos = rand.randint(300, 300)
     t.goto(new_xpos, new_ypos)
 
+# Add this function to your game code
 
+# manages the leaderboard for top 5 scorers
+def manage_leaderboard():
+
+  global score
+  global t
+
+  # get the names and scores from the leaderboard file
+  leader_names_list = lb.get_names(leaderboard_file_name)
+  leader_scores_list = lb.get_scores(leaderboard_file_name)
+
+  # show the leaderboard with or without the current player
+  if (len(leader_scores_list) < 5 or score >= leader_scores_list[4]):
+    lb.update_leaderboard(leaderboard_file_name, leader_names_list, leader_scores_list, player_name, score)
+    lb.draw_leaderboard(True, leader_names_list, leader_scores_list, t, score)
+
+  else:
+    lb.draw_leaderboard(False, leader_names_list, leader_scores_list, t, score)
 
 #-----events----------------
 t.onclick(t_clicked)
