@@ -24,7 +24,9 @@ score = 0
 font_setup = ("Arial", 20, "normal")
 timer_up = False
 # leaderboard variables
-leaderboard_file_name = "a122_leaderboard.txt"
+leaderboard_file_name = "leaderboard.py"
+leader_names_list = []
+leader_scores_list = []
 player_name = input("Please enter your name:")
 
 #-----initialize turtle-----
@@ -72,9 +74,12 @@ def change_position():
 
 # manages the leaderboard for top 5 scorers
 def manage_leaderboard():
-
+  global leader_names_list
+  global leader_scores_list
   global score
   global t
+
+  lb.load_leaderboard(leaderboard_file_name, leader_names_list, leader_scores_list)
 
   # get the names and scores from the leaderboard file
   leader_names_list = lb.get_names(leaderboard_file_name)
