@@ -1,101 +1,109 @@
 # a121_catch_a_turtle.py
-#-----import statements-----
+# -----import statements-----
 import turtle as trtl
 t = trtl.Turtle()
 import random as rand
 score_writer = trtl.Turtle()
 import leaderboard as lb
+counter = trtl.Turtle()
 
-#-----countdown variables-----
+# -----game configuration----
+
+score = 0
+t_color = ["red", "orange", "yellow", "green", "cyan", "blue", "purple", "silver"]
+t_size = [0.5, 0.75, 1, 1.5, 2, 2.5, 3]
+bg_color = ["green", "blue", "purple"]
+t_shape = "circle"
 font_setup = ("Arial", 20, "normal")
 timer = 5
-counter_interval = 1000   #1000 represents 1 second
+counter_interval = 1000
 timer_up = False
 
-#-----countdown writer-----
-counter =  trtl.Turtle()
-
-
-#-----game configuration----
-t_shape = "arrow"
-t_color = "red"
-t_shapesize = 5
-score = 0
-font_setup = ("Arial", 20, "normal")
-timer_up = False
-# leaderboard variables
+# -----initialize turtle-----
 leaderboard_file_name = "leaderboard.py"
 leader_names_list = []
 leader_scores_list = []
 player_name = input("Please enter your name:")
 
-#-----initialize turtle-----
-t.shape(t_shape)
-t.shapesize(t_shapesize)
-t.fillcolor(t_color)
-
+score_writer.speed(0)
 score_writer.penup()
-score_writer.goto(-150,200)
+score_writer.goto(-250, 250)
 score_writer.hideturtle()
 
+counter.speed()
 counter.penup()
-counter.goto(150,200)
+counter.goto(-300, 350)
+counter.hideturtle()
 
-#-----game functions--------
-def t_clicked(x,y):
+
+t.speed(0)
+t.penup()
+t.shape("circle")
+
+
+# -----game functions--------
+def manage_leaderboard():
+    global leader_scores_list
+    global leader_names_list
+    global score
+    global t
+
+    # load all the leaderboard records into the lists
+    lb.load_leaderboard(leaderboard_file_name, leader_names_list, leader_scores_list)
+
+    # TODO
+    if (len(leader_scores_list) < 5 or score > leader_scores_list[4]):
+        lb.update_leaderboard(leaderboard_file_name, leader_names_list, leader_scores_list, player_name, score)
+        lb.draw_leaderboard(leader_names_list, leader_scores_list, True, t, score)
+
+    else:
+        lb.draw_leaderboard(leader_names_list, leader_scores_list, False, t, score)
+
+
+def t_clicked(x, y):
+    update_score(x, y)
     change_position()
-    update_score()
-def update_score():
+    colorsize()
+
+
+def change_position():
+    new_xpos = rand.randint(-350, 350)
+    new_ypos = rand.randint(-300, 300)
+    t.goto(new_xpos, new_ypos)
+
+
+def update_score(x, y):
     global score
     score += 1
     score_writer.clear()
     score_writer.write(score, font=font_setup)
 
+
 def countdown():
-  global timer, timer_up
-  counter.clear()
-  if timer <= 0:
-    counter.write("Time's Up", font=font_setup)
-    timer_up = True
-    manage_leaderboard()
-  else:
-    counter.write("Timer: " + str(timer), font=font_setup)
-    timer -= 1
-    counter.getscreen().ontimer(countdown, counter_interval)
+    global timer, timer_up
+    counter.clear()
+    if timer <= 0:
+        counter.write("Time's Up", font=font_setup)
+        timer_up = True
+        manage_leaderboard()
+    else:
+        counter.write("Timer: " + str(timer), font=font_setup)
+        timer -= 1
+        counter.getscreen().ontimer(countdown, counter_interval)
 
 
-def change_position():
-    t.penup()
-    new_xpos = rand.randint(-350,300)
-    new_ypos = rand.randint(300, 300)
-    t.goto(new_xpos, new_ypos)
+def colorsize():
+    t.shapesize(rand.choice(t_size))
+    t.color(rand.choice(t_color))
 
-# Add this function to your game code
 
-# manages the leaderboard for top 5 scorers
-def manage_leaderboard():
-  global leader_names_list
-  global leader_scores_list
-  global score
-  global t
-
-  lb.load_leaderboard(leaderboard_file_name, leader_names_list, leader_scores_list)
-
-  # get the names and scores from the leaderboard file
-  leader_names_list = lb.get_names(leaderboard_file_name)
-  leader_scores_list = lb.get_scores(leaderboard_file_name)
-
-  # show the leaderboard with or without the current player
-  if (len(leader_scores_list) < 5 or score >= leader_scores_list[4]):
-    lb.update_leaderboard(leaderboard_file_name, leader_names_list, leader_scores_list, player_name, score)
-    lb.draw_leaderboard(True, leader_names_list, leader_scores_list, t, score)
-
-  else:
-    lb.draw_leaderboard(False, leader_names_list, leader_scores_list, t, score)
-
-#-----events----------------
+# -----events----------------
 t.onclick(t_clicked)
-
 wn = trtl.Screen()
+wn.bgcolor("white")
 wn.ontimer(countdown, counter_interval)
 wn.mainloop()
+
+# ------high scores-------------
+# 32
+
