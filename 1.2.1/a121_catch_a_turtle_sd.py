@@ -15,7 +15,7 @@ t_shape = "turtle"
 
 # Changed from 30 to 5 for testing purposes
 #timer = 30
-timer = 5
+timer = 15
 
 counter_interval = 1000
 timer_up = False
