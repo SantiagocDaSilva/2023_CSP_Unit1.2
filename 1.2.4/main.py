@@ -1,32 +1,48 @@
-import turtle as drawer
-'''
-x = starting distance
-y = incremental distance
+import turtle as trtl
+import random as rand
 
-In a loop:
-    1. go forward x
-    2. turn left 90 degrees
-    3. go forward x + y
-    2. turn left 90 degrees
-'''
+wn = trtl.Screen()
+drawer = trtl.Turtle()
+path_width = 20
+numBarriers = 30
+wall_len = 15
+door_width = 30
+
+
 def drawSpiral():
     drawer.speed(0)
     x = 10
     y = 10
     for step in range(25):
         drawer.left(90)
-        drawer.forward(x+y)
+        drawer.forward(x + y)
         y += 10
-        drawDoor()
+        drawBarriers()
+        drawDoors()
         drawer.hideturtle()
-def drawDoor():
+
+
+def drawDoors():
     drawer.speed(0)
     drawer.forward(10)
     drawer.penup()
-    drawer.forward(6 * 2)
+    drawer.forward(path_width * 2)
     drawer.pendown()
 
 
+def drawBarriers():
+    drawer.speed()
+    drawer.left(90)
+    drawer.forward(path_width)
+    drawer.backward(path_width)
+    drawer.right(90)
+
+
+def randomBarriers():
+    for w in range(numBarriers):
+        if w < numBarriers - 5:
+            door = rand.randint(path_width*2, (wall_len - path_width*2))
+            barrier = rand.randint(path_width * 2, (wall_len - path_width * 2))
+
 
 drawSpiral()
-
