@@ -1,57 +1,61 @@
 import turtle as trtl
 import random as rand
 
-wn = trtl.Screen()
-drawer = trtl.Turtle()
-path_width = 22
-wall_len = 8
-door_width = 30
-test = 200
+# maze configuration variables
+num_sides = 25
+path_width = 15
+wall_color = "black"
+
+# config maze
+maze_painter = trtl.Turtle()
+maze_painter.pensize(5)
+maze_painter.pencolor(wall_color)
+maze_painter.speed("fastest")
+
 
 def drawSpiral():
-    drawer.speed(0)
-    x = 10
-    y = 10
-    for step in range(25):
-        drawer.left(90)
-        drawer.forward(x + y)
-        y += 10
-        drawBarriers()
-        drawDoors()
-        drawer.hideturtle()
+    wall_len = path_width
+    for w in range(num_sides):
+        wall_len += path_width
+
+        if w > 4:
+            randomNum = rand.randint(0, 1)
+            # Initial turn for painter to be in the correct direction
+            maze_painter.left(90)
+
+            if randomNum == 1:
+                # Draw the door
+                draw_door()
+                # Draw the barrier
+                draw_barrier()
+            else:
+                # Draw the barrier
+                draw_barrier()
+                # Draw the door
+                draw_door()
+
+            # Remember: you have to subtract the amount you drew for the wall and
+            # barrier to avoid making the walls bigger.
 
 
-def drawDoors():
-    drawer.speed(0)
-    drawer.penup()
-    drawer.forward(path_width)
-    drawer.pendown()
+def draw_door():
+    maze_painter.forward(10)
+    maze_painter.penup()
+    maze_painter.forward(path_width * 2)
+    maze_painter.pendown()
 
 
-def drawBarriers():
-    drawer.speed()
-    drawer.right(90)
-    drawer.forward(wall_len*2)
-    drawer.backward(wall_len*2)
-    drawer.left(90)
+def draw_barrier():
+    # draw barrier wall
+    maze_painter.forward(40)
+    maze_painter.left(90)
+    maze_painter.forward(path_width * 2)
+    maze_painter.backward(path_width * 2)
+    maze_painter.right(90)
 
 
-for w in range(25):
-    if w < 17:
-        door = rand.randint(0,test/2)
-        barrier = rand.randint(wall_len * 2, test - path_width * 2)
-        if door < barrier:
-            drawer.forward(door)
-            drawDoors()
-            drawer.forward(barrier - door - path_width)
-            drawBarriers()
-            drawer.forward(test - barrier)
-        else:
-            drawer.forward(barrier)
-            drawBarriers()
-            drawer.forward(door-barrier)
-            drawDoors()
-            drawer.forward(test - path_width - door)
-        drawer.right(90)
-        test = test - 8
 drawSpiral()
+maze_painter.hideturtle()
+
+wn = trtl.Screen()
+wn.mainloop()
