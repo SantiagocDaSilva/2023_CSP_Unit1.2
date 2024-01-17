@@ -19,18 +19,25 @@ gameOver = False
 turns = 1
 drawBoard()
 
-while (turns<10):
+while (turns < 10) and not gameOver:
     turns += 1
     move1 = int(input("Make a move, pick any of the numbers 1-9"))
-    board[move1-1]="X"
-    spaces.remove(move1-1)
+    board[move1 - 1] = "X"
+    spaces.remove(move1 - 1)
     drawBoard()
     gameOver = False
 turns = 2
-drawBoard()
-while (turns<10):
+while (turns < 10) and not gameOver:
     turns += 2
-    move1=int(input("My turn"))
-    board[move1 - 2] = "O"
-    spaces.remove(move1 - 1)
+    move2 = int(input("My turn"))
+    board[move2 - 2] = "O"
+    spaces.remove(move2 - 2)
     drawBoard()
+turns = 3
+while (turns < 10) and not gameOver:
+    turns += 3
+    move3 = int(input("Make a move, pick any of the numbers 1-9"))
+    board[move3 - 3] = "X"
+    spaces.remove(move3 - 3)
+    drawBoard()
+    gameOver = False
