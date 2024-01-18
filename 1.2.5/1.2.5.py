@@ -1,4 +1,4 @@
-# Santiago DaSilva 1.2.5
+# Santiago DaSilva and Angelo 1.2.5
 
 import turtle as trtl
 colors = ["black", "sky blue", "salmon", "orchid", "pale green"]
